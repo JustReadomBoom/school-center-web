@@ -1,0 +1,640 @@
+<template>
+    <div id="student">
+        <form-dialog
+                :rules="rules"
+                :dialogFormVisible="dialogFormVisible"
+                :title="formEditType"
+                :searchData="authgroupForm"
+                :searchForm="searchForm"
+                :name="names"
+                @validateTrue="validateTrue"
+                @validateFalse="validateFalse"
+                @closeDialogFunc="closeDialog"
+
+        ></form-dialog>
+        <div class="bar">
+            <el-row class="user">
+                <el-tag class="alert" style="color: rgb(64, 94, 114);" size="medium">
+                    登录用戶：{{this.Cook.get("userName")}}
+                </el-tag>
+                <el-button class="badge" size="mini" type="info" @click="LogOut()">退出</el-button>
+            </el-row>
+
+            <div style="margin-bottom: 30px;display: flex;justify-content: center;align-items: center">
+                <el-input class="in" v-model="keywords">
+                </el-input>
+                <el-input class="in" v-model="name">
+                </el-input>
+                <el-button class="btn" size="small" type="primary" icon="el-icon-search" @click="searchClick()">搜索
+                </el-button>
+            </div>
+
+
+            <el-row class="guanli">
+                <el-row style="margin-top:30px;">
+                    <el-button class="btn" disabled=true size="mini" type="primary" @click="handleStudent()">学生管理
+                    </el-button>
+                </el-row>
+                <el-row style="margin-top:20px;">
+                    <el-button class="btn" :disabled="seen" size="mini" type="primary" @click="handleClasses()">班级管理
+                    </el-button>
+                </el-row>
+
+
+            </el-row>
+        </div>
+        <el-row style="margin-top:20px;margin-left:10%;">
+            <el-button class="btn" size="mini" type="primary" @click="handleAdd()">添加</el-button>
+        </el-row>
+        <el-row class="row alert alert-info" style="height: 80%;">
+
+
+            <el-table class="table table-striped" :data="students" style="width: 100%">
+
+                <el-table-column :span="8" label="学号">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.code }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="姓名" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.name }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="性别" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.sex == 1 ? "男" : "女" }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="年龄" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.age }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="班级" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.className }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="爸爸姓名" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.fatherName }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="爸爸手机号" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.fatherPhone }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="爸爸工作" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.fatherJob }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="妈妈姓名" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.motherName }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="妈妈手机号" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.motherPhone }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="妈妈工作" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.motherJob }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="家庭地址" :span="8">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.homeAddress }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="mit" label="操作" width="180">
+                    <template slot-scope="scope">
+                        <el-button type="warning" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+
+                        <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">刪除</el-button>
+                    </template>
+                </el-table-column>
+
+
+            </el-table>
+        </el-row>
+        <el-row>
+            <el-pagination
+                    class="pagination"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+
+                    layout=" prev, pager, next"
+                    :total="total">
+            </el-pagination>
+        </el-row>
+
+    </div>
+</template>
+
+<script>
+
+    import FormDialog from '../entry/Dialog'
+    import 'bootstrap/dist/css/bootstrap.min.css'
+
+
+    export default {
+        name: 'Students',
+        components: {
+
+            FormDialog
+        },
+        data() {
+            return {
+                id: "",
+                code: "",
+                name: "",
+                classCode: "",
+                className: "",
+                age: 0,
+                sex: 0,
+                photo: "",
+                height: "",
+                fatherName: "",
+                fatherPhone: "",
+                fatherJob: "",
+                motherName: "",
+                motherPhone: "",
+                motherJob: "",
+                homeAddress: "",
+                otherFamily: "",
+
+                names: "请输入学号进行搜索...",
+                seen: false,
+                userName: '',
+                students: [],
+                keywords: "",
+
+                dialogFormVisible: false,
+                formEditType: 'add',
+
+                classList: [],
+                currentPage: 1,
+                pagesize: 10,
+                total: 0,
+                authgroupForm: {
+                    id: "",
+                    code: "",
+                    name: "",
+                    classCode: "",
+                    className: "",
+                    age: 0,
+                    sex: 0,
+                    photo: "",
+                    height: "",
+                    fatherName: "",
+                    fatherPhone: "",
+                    fatherJob: "",
+                    motherName: "",
+                    motherPhone: "",
+                    motherJob: "",
+                    homeAddress: "",
+
+
+                },
+                searchForm: [
+                    {
+                        type: "Input",
+                        label: "学号",
+                        prop: "code",
+                        width: "120px",
+                        disabled: false,
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "姓名",
+                        prop: "name",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Select",
+                        label: "性别",
+                        prop: "sex",
+                        width: "120px",
+                        props: [
+                            {
+                                className: "男",
+                                classCode: "0"
+                            },
+                            {
+                                className: "女",
+                                classCode: "1"
+                            }
+                        ],
+                        change: row => {
+                        },
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "年龄",
+                        prop: "age",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Select",
+                        label: "班级",
+                        prop: "classCode",
+                        width: "120px",
+                        props: this.classList,
+                        change: row => {
+
+
+                        },
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "爸爸姓名",
+                        prop: "fatherName",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "爸爸手机号",
+                        prop: "fatherPhone",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "爸爸工作单位",
+                        prop: "fatherJob",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "妈妈姓名",
+                        prop: "motherName",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "妈妈手机号",
+                        prop: "motherPhone",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "妈妈工作单位",
+                        prop: "motherJob",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+
+                    {
+                        type: "Input",
+                        label: "家庭地址",
+                        prop: "homeAddress",
+                        width: "120px",
+                        isFormItemShow: true
+                    }
+
+
+                ],
+                rules: {
+                    code: [
+                        {required: true, message: "请输入学生学号", trigger: "blur"}
+                    ],
+                    name: [
+                        {required: true, message: "请输入学生姓名", trigger: "blur"}
+                    ],
+                    sex: [
+                        {required: true, message: "请选择学生性别", trigger: "blur"}
+                    ],
+                    age: [
+                        {required: true, message: "请输入年龄", trigger: "blur"},
+                    ],
+                    phone: [
+                        {required: true, message: "请输入手机号码", trigger: "blur"}
+                    ],
+                    classCode: [
+                        {required: true, message: "请选择班级", trigger: "blur"}
+                    ]
+                },
+            }
+        },
+        created() {
+            //     if (this.username = this.$route.query.username) {
+            //         this.Cook.set("username", this.username);
+            //     } else {
+            //         this.username = this.Cook.get("username");
+            //     }
+            //     this.getNon()
+            //
+            //
+            this.getClassesList();
+        },
+        mounted() {
+
+            this.handleCurrentChange(this.currentPage);
+            this.pagesize = this.total % this.currentPage
+
+        },
+        methods: {
+            // getNon() {
+            //     let _this = this;
+            //     this.$axios.get('http://localhost:8080/class').then(
+            //         resp => {
+            //
+            //             _this.seen = false
+            //
+            //
+            //         }).catch(function (error) {
+            //         _this.seen = true
+            //
+            //     });
+            // },
+            getClassesList() {
+                this.$http.get("http://localhost:8521/class/queryClassList",
+                    {
+                        withCredentials: true
+                    }).then(resp => {
+                    let code = resp.data.code;
+                    if (code === '0000') {
+                        this.classList = resp.data.data.classList;
+                        this.searchForm[4].props = this.classList;
+                    } else {
+                        this.$message(resp.data.msg)
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.$message(error)
+                });
+            },
+            validateTrue(searchData) {
+                console.log("searchData=", JSON.stringify(searchData))
+                if (this.formEditType === "edit") {
+                    this.editStudents(searchData);
+                } else if (this.formEditType === "add") {
+                    this.addStudents(searchData);
+                }
+                this.dialogFormVisible = false;
+            },
+            validateFalse() {
+                this.dialogFormVisible = true;
+            },
+            closeDialog(newDialogFormVisible) {
+
+                this.dialogFormVisible = newDialogFormVisible;
+            },
+            editStudents(searchData) {
+                this.$http.post("http://localhost:8521/student/update",
+                    {
+                        id: searchData.id,
+                        code: searchData.code,
+                        name: searchData.name,
+                        classCode: searchData.classCode,
+                        sex: searchData.sex,
+                        age: searchData.age,
+                        fatherName: searchData.fatherName,
+                        fatherPhone: searchData.fatherPhone,
+                        fatherJob: searchData.fatherJob,
+                        motherName: searchData.motherName,
+                        motherPhone: searchData.motherPhone,
+                        motherJob: searchData.motherJob,
+                        homeAddress: searchData.homeAddress
+                    },
+                    {
+                        withCredentials: true
+                    }).then(resp => {
+                    let code = resp.data.code;
+                    if (code === '0000') {
+                        this.$message.success(resp.data.message);
+                        this.handleCurrentChange(this.currentPage);
+                    } else {
+                        this.$message(resp.data.msg)
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.$message(error)
+                });
+            },
+            addStudents(searchData) {
+                this.$http.post("http://localhost:8521/student/add",
+                    {
+                        code: searchData.code,
+                        name: searchData.name,
+                        classCode: searchData.classCode,
+                        sex: searchData.sex == '男' ? 1 : 2,
+                        age: searchData.age,
+                        fatherName: searchData.fatherName,
+                        fatherPhone: searchData.fatherPhone,
+                        fatherJob: searchData.fatherJob,
+                        motherName: searchData.motherName,
+                        motherPhone: searchData.motherPhone,
+                        motherJob: searchData.motherJob,
+                        homeAddress: searchData.homeAddress
+                    },
+                    {
+                        withCredentials: true
+                    }).then(resp => {
+                    let code = resp.data.code;
+                    if (code === '0000') {
+                        this.$message.success(resp.data.message);
+                        this.handleCurrentChange(this.currentPage);
+                    } else {
+                        this.$message(resp.data.msg)
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.$message(error)
+                });
+            },
+            searchResuls(keywords) {
+                if (keywords) {
+                    this.handStudentId(keywords);
+                } else {
+                    this.handleCurrentChange(this.currentPage);
+                }
+
+            },
+            handleSizeChange: function (size) {
+                this.pagesize = size;
+                console.info(size)
+            },
+
+            searchClick() {
+                this.$http.get("http://localhost:8521/student/queryByCode?code=" + this.keywords,
+                    {
+                        withCredentials: true
+                    }).then(resp => {
+                    let code = resp.data.code;
+                    console.log("学生数据=" + resp.data);
+                    if (code === '0000') {
+                        this.students = resp.data.data
+                        this.total = resp.data.data.total
+                    } else {
+                        this.students = '';
+                        this.$message(resp.data.msg)
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.$message(error)
+                });
+            },
+            handleCurrentChange: function (currentPage) {
+                this.$http.post("http://localhost:8521/student/queryPage",
+                    {
+                        currentPage: currentPage,
+                        pageSize: 10
+                    },
+                    {
+                        withCredentials: true
+                    }).then(resp => {
+                    let code = resp.data.code;
+                    if (code === '0000') {
+                        this.students = resp.data.data.students
+                        this.total = resp.data.data.total
+                    } else {
+                        this.$message(resp.data.msg)
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.$message(error)
+                });
+            },
+            handleClasses() {
+                this.$router.push({path: '/classess', query: {}});
+            },
+
+
+            handleAdd() {
+                this.dialogFormVisible = !this.dialogFormVisible;
+                this.formEditType = 'add';
+                this.searchForm[0].disabled = false;
+
+            },
+            handleEdit(student) {
+                    this.authgroupForm.id = student.id,
+                    this.authgroupForm.code = student.code,
+                    this.authgroupForm.name = student.name,
+                    this.authgroupForm.classCode = student.className,
+                    this.authgroupForm.sex = student.sex = 1 ? "男" : "女",
+                    this.authgroupForm.age = student.age,
+                    this.authgroupForm.fatherName = student.fatherName,
+                    this.authgroupForm.fatherPhone = student.fatherPhone,
+                    this.authgroupForm.fatherJob = student.fatherJob,
+                    this.authgroupForm.motherName = student.motherName,
+                    this.authgroupForm.motherPhone = student.motherPhone,
+                    this.authgroupForm.motherJob = student.motherJob,
+                    this.authgroupForm.homeAddress = student.homeAddress,
+                    this.dialogFormVisible = !this.dialogFormVisible;
+                this.formEditType = 'edit';
+                this.searchForm[0].disabled = true;
+                this.searchForm[1].disabled = true;
+                this.searchForm[2].disabled = true;
+                this.searchForm[3].disabled = true;
+
+            },
+            LogOut() {
+                this.$message.success("登出成功")
+                this.Cook.set("userName", null);
+                this.$router.push({path: '/', query: {}});
+            },
+            handleStudent() {
+                this.$router.push({path: '/', query: {}});
+            },
+            handleDelete(studentId) {
+                this.$http.get("http://localhost:8521/student/deleteById?id=" + studentId,
+                    {
+                        withCredentials: true
+                    }).then(resp => {
+                    let code = resp.data.code;
+                    this.$message(resp.data.msg)
+                    if (code === '0000') {
+                        this.handleCurrentChange(this.currentPage);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.$message(error)
+                });
+            }
+        }
+    }
+</script>
+<style scoped>
+    * {
+        font-size: 0.2vw;
+
+
+    }
+
+    #student {
+
+        margin-left: 5%;
+        width: 90%;
+
+
+    }
+
+    .row {
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .guanli {
+        width: 20%;
+        position: absolute;
+        margin-right: 40px;
+
+    }
+
+    .pagination {
+
+        width: 30%;
+        margin-left: 10%;
+        margin-bottom: 20px;
+        color: rgb(59, 65, 121);
+
+    }
+
+    .btn {
+        background: rgb(64, 94, 114);
+    }
+
+    .user {
+
+        float: left;
+        margin-right: 100px;
+    }
+
+    .in {
+        float: left;
+        width: 20%;
+
+    }
+
+    .bar {
+        width: 80%;
+    }
+</style>
