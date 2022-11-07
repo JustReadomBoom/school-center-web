@@ -21,9 +21,14 @@
             </el-row>
 
             <div style="margin-bottom: 30px;display: flex;justify-content: center;align-items: center">
-                <el-input class="in" v-model="keywords">
-                </el-input>
+                <span style="color: black">姓名：</span>
                 <el-input class="in" v-model="name">
+                </el-input>
+                <span style="color: black">学号：</span>
+                <el-input class="in" v-model="code">
+                </el-input>
+                <span style="color: black">班级：</span>
+                <el-input class="in" v-model="classCode">
                 </el-input>
                 <el-button class="btn" size="small" type="primary" icon="el-icon-search" @click="searchClick()">搜索
                 </el-button>
@@ -211,7 +216,6 @@
                     motherPhone: "",
                     motherJob: "",
                     homeAddress: "",
-
 
                 },
                 searchForm: [
@@ -429,7 +433,7 @@
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.$message.success(resp.data.message);
+                        this.$message(resp.data.msg);
                         this.handleCurrentChange(this.currentPage);
                     } else {
                         this.$message(resp.data.msg)
@@ -460,7 +464,7 @@
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.$message.success(resp.data.message);
+                        this.$message(resp.data.msg);
                         this.handleCurrentChange(this.currentPage);
                     } else {
                         this.$message(resp.data.msg)
@@ -484,24 +488,31 @@
             },
 
             searchClick() {
-                this.$http.get("http://localhost:8521/student/queryByCode?code=" + this.keywords,
+                this.$http.post("http://localhost:8521/student/queryPage",
+                    {
+                        currentPage: this.currentPage,
+                        pageSize: 10,
+                        name: this.name,
+                        code: this.code,
+                        classCode: this.classCode
+                    },
                     {
                         withCredentials: true
                     }).then(resp => {
                     let code = resp.data.code;
-                    console.log("学生数据=" + resp.data);
                     if (code === '0000') {
-                        this.students = resp.data.data
+                        this.students = resp.data.data.students
                         this.total = resp.data.data.total
                     } else {
-                        this.students = '';
                         this.$message(resp.data.msg)
+                        this.students = [];
                     }
                 }).catch(error => {
                     console.log(error);
                     this.$message(error)
                 });
             },
+
             handleCurrentChange: function (currentPage) {
                 this.$http.post("http://localhost:8521/student/queryPage",
                     {
