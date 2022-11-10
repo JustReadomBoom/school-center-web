@@ -1,7 +1,7 @@
 <template>
   <div class="" id="app">
 
-    <div class="head ">Student System</div>
+    <div class="head ">幼儿园管理系统</div>
     <div class="message"> <div class="left"></div>
       <router-view></router-view>
     </div>

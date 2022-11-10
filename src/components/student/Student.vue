@@ -205,8 +205,8 @@
                     name: "",
                     classCode: "",
                     className: "",
-                    age: 0,
-                    sex: 0,
+                    age: "",
+                    sex: "",
                     photo: "",
                     height: "",
                     fatherName: "",
@@ -327,23 +327,55 @@
                 ],
                 rules: {
                     code: [
-                        {required: true, message: "请输入学生学号", trigger: "blur"}
+                        {required: true, message: "请填写学生学号", trigger: "blur"}
                     ],
                     name: [
-                        {required: true, message: "请输入学生姓名", trigger: "blur"}
+                        {required: true, message: "请填写学生姓名", trigger: "blur"},
+                        {max: 5, min: 1, message: "请填正确的姓名", trigger: "blur"}
                     ],
                     sex: [
                         {required: true, message: "请选择学生性别", trigger: "blur"}
                     ],
                     age: [
-                        {required: true, message: "请输入年龄", trigger: "blur"},
+                        {required: true, message: "请填写年龄", trigger: "blur"},
+                        {pattern: "^(0|[1-9][0-9]*)$", message: "年龄格式错误", trigger: "blur"}
                     ],
-                    phone: [
-                        {required: true, message: "请输入手机号码", trigger: "blur"}
+                    fatherName:[
+                        {required: true, message: "请填写爸爸姓名", trigger: "blur"}
+                    ],
+                    fatherPhone: [
+                        {required: true, message: "请填写爸爸手机号码", trigger: "blur"},
+                        {
+                            pattern: "^1(3\\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\\d|9[0-35-9])\\d{8}$",
+                            message: "请输入正确的手机号",
+                            trigger: "blur"
+                        }
                     ],
                     classCode: [
                         {required: true, message: "请选择班级", trigger: "blur"}
+                    ],
+                    motherName:[
+                        {required: true, message: "请填写妈妈姓名", trigger: "blur"}
+                    ],
+                    motherPhone: [
+                        {required: true, message: "请填写妈妈手机号码", trigger: "blur"},
+                        {
+                            pattern: "^1(3\\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\\d|9[0-35-9])\\d{8}$",
+                            message: "请输入正确的手机号",
+                            trigger: "blur"
+                        }
+                    ],
+                    fatherJob: [
+                        {required: true, message: "请填写爸爸的工作", trigger: "blur"}
+                    ],
+                    motherJob: [
+                        {required: true, message: "请填写妈妈的工作", trigger: "blur"}
+                    ],
+                    homeAddress: [
+                        {required: true, message: "请填写家庭地址", trigger: "blur"}
                     ]
+
+
                 },
             }
         },
@@ -546,7 +578,7 @@
 
             },
             handleEdit(student) {
-                    this.authgroupForm.id = student.id,
+                this.authgroupForm.id = student.id,
                     this.authgroupForm.code = student.code,
                     this.authgroupForm.name = student.name,
                     this.authgroupForm.classCode = student.className,
