@@ -234,7 +234,7 @@
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.$message.success(resp.data.message);
+                        this.$message(resp.data.msg);
                         this.handleCurrentChange(this.currentPage);
                     } else {
                         this.$message(resp.data.msg)
@@ -320,7 +320,7 @@
             },
 
             LogOut() {
-                this.$message.success("登出成功")
+                this.$message("登出成功")
                 this.Cook.set("userName", null);
                 this.$router.push({path: '/', query: {}});
             },
