@@ -92,17 +92,17 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="爸爸手机号" :span="8">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.fatherPhone }}</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="爸爸手机号" :span="8">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{ scope.row.fatherPhone }}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
-                <el-table-column label="爸爸工作" :span="8">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.fatherJob }}</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="爸爸工作" :span="8">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{ scope.row.fatherJob }}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
                 <el-table-column label="妈妈姓名" :span="8">
                     <template slot-scope="scope">
@@ -110,28 +110,28 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="妈妈手机号" :span="8">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.motherPhone }}</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="妈妈手机号" :span="8">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{ scope.row.motherPhone }}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
-                <el-table-column label="妈妈工作" :span="8">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.motherJob }}</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="妈妈工作" :span="8">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{ scope.row.motherJob }}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
-                <el-table-column label="家庭地址" :span="8">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.homeAddress }}</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="家庭地址" :span="8">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{ scope.row.homeAddress }}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
-                <el-table-column prop="mit" label="操作" width="180">
+                <el-table-column prop="mit" label="操作" width="220">
                     <template slot-scope="scope">
-                        <el-button type="warning" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-
+                        <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
+                        <el-button type="success" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">刪除</el-button>
                     </template>
                 </el-table-column>
@@ -176,15 +176,15 @@
                 age: 0,
                 sex: 0,
                 photo: "",
-                height: "",
                 fatherName: "",
                 fatherPhone: "",
                 fatherJob: "",
+                fatherIdNo: "",
                 motherName: "",
                 motherPhone: "",
                 motherJob: "",
+                motherIdNo: "",
                 homeAddress: "",
-                otherFamily: "",
 
                 names: "请输入学号进行搜索...",
                 seen: false,
@@ -212,9 +212,11 @@
                     fatherName: "",
                     fatherPhone: "",
                     fatherJob: "",
+                    fatherIdNo: "",
                     motherName: "",
                     motherPhone: "",
                     motherJob: "",
+                    motherIdNo: "",
                     homeAddress: "",
 
                 },
@@ -288,6 +290,13 @@
                     },
                     {
                         type: "Input",
+                        label: "爸爸身份证号",
+                        prop: "fatherIdNo",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
                         label: "爸爸工作单位",
                         prop: "fatherJob",
                         width: "120px",
@@ -309,12 +318,18 @@
                     },
                     {
                         type: "Input",
+                        label: "妈妈身份证号",
+                        prop: "motherIdNo",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
                         label: "妈妈工作单位",
                         prop: "motherJob",
                         width: "120px",
                         isFormItemShow: true
                     },
-
                     {
                         type: "Input",
                         label: "家庭地址",
@@ -340,7 +355,7 @@
                         {required: true, message: "请填写年龄", trigger: "blur"},
                         {pattern: "^(0|[1-9][0-9]*)$", message: "年龄格式错误", trigger: "blur"}
                     ],
-                    fatherName:[
+                    fatherName: [
                         {required: true, message: "请填写爸爸姓名", trigger: "blur"}
                     ],
                     fatherPhone: [
@@ -354,7 +369,7 @@
                     classCode: [
                         {required: true, message: "请选择班级", trigger: "blur"}
                     ],
-                    motherName:[
+                    motherName: [
                         {required: true, message: "请填写妈妈姓名", trigger: "blur"}
                     ],
                     motherPhone: [
@@ -373,43 +388,41 @@
                     ],
                     homeAddress: [
                         {required: true, message: "请填写家庭地址", trigger: "blur"}
+                    ],
+                    fatherIdNo: [
+                        {required: true, message: "请填写爸爸的身份证号", trigger: "blur"},
+                        {
+                            pattern: "^[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$",
+                            message: "请输入正确的身份证号",
+                            trigger: "blur"
+                        }
+                    ],
+                    motherIdNo: [
+                        {required: true, message: "请填写妈妈的身份证号", trigger: "blur"},
+                        {
+                            pattern: "^[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$",
+                            message: "请输入正确的身份证号",
+                            trigger: "blur"
+                        }
                     ]
 
 
                 },
             }
         },
+
         created() {
-            //     if (this.username = this.$route.query.username) {
-            //         this.Cook.set("username", this.username);
-            //     } else {
-            //         this.username = this.Cook.get("username");
-            //     }
-            //     this.getNon()
-            //
-            //
             this.getClassesList();
         },
+
         mounted() {
 
             this.handleCurrentChange(this.currentPage);
             this.pagesize = this.total % this.currentPage
 
         },
+
         methods: {
-            // getNon() {
-            //     let _this = this;
-            //     this.$axios.get('http://localhost:8080/class').then(
-            //         resp => {
-            //
-            //             _this.seen = false
-            //
-            //
-            //         }).catch(function (error) {
-            //         _this.seen = true
-            //
-            //     });
-            // },
             getClassesList() {
                 this.$http.get("http://localhost:8521/class/queryClassList",
                     {
@@ -427,6 +440,7 @@
                     this.$message(error)
                 });
             },
+
             validateTrue(searchData) {
                 console.log("searchData=", JSON.stringify(searchData))
                 if (this.formEditType === "edit") {
@@ -436,13 +450,15 @@
                 }
                 this.dialogFormVisible = false;
             },
+
             validateFalse() {
                 this.dialogFormVisible = true;
             },
-            closeDialog(newDialogFormVisible) {
 
+            closeDialog(newDialogFormVisible) {
                 this.dialogFormVisible = newDialogFormVisible;
             },
+
             editStudents(searchData) {
                 this.$http.post("http://localhost:8521/student/update",
                     {
@@ -458,7 +474,9 @@
                         motherName: searchData.motherName,
                         motherPhone: searchData.motherPhone,
                         motherJob: searchData.motherJob,
-                        homeAddress: searchData.homeAddress
+                        homeAddress: searchData.homeAddress,
+                        fatherIdNo: searchData.fatherIdNo,
+                        motherIdNo: searchData.motherIdNo
                     },
                     {
                         withCredentials: true
@@ -475,6 +493,7 @@
                     this.$message(error)
                 });
             },
+
             addStudents(searchData) {
                 this.$http.post("http://localhost:8521/student/add",
                     {
@@ -489,7 +508,9 @@
                         motherName: searchData.motherName,
                         motherPhone: searchData.motherPhone,
                         motherJob: searchData.motherJob,
-                        homeAddress: searchData.homeAddress
+                        homeAddress: searchData.homeAddress,
+                        fatherIdNo: searchData.fatherIdNo,
+                        motherIdNo: searchData.motherIdNo
                     },
                     {
                         withCredentials: true
@@ -506,14 +527,7 @@
                     this.$message(error)
                 });
             },
-            searchResuls(keywords) {
-                if (keywords) {
-                    this.handStudentId(keywords);
-                } else {
-                    this.handleCurrentChange(this.currentPage);
-                }
 
-            },
             handleSizeChange: function (size) {
                 this.pagesize = size;
                 console.info(size)
@@ -566,10 +580,10 @@
                     this.$message(error)
                 });
             },
+
             handleClasses() {
                 this.$router.push({path: '/classess', query: {}});
             },
-
 
             handleAdd() {
                 this.dialogFormVisible = !this.dialogFormVisible;
@@ -577,7 +591,8 @@
                 this.searchForm[0].disabled = false;
 
             },
-            handleEdit(student) {
+
+            handleDetail(student) {
                 this.authgroupForm.id = student.id,
                     this.authgroupForm.code = student.code,
                     this.authgroupForm.name = student.name,
@@ -587,26 +602,78 @@
                     this.authgroupForm.fatherName = student.fatherName,
                     this.authgroupForm.fatherPhone = student.fatherPhone,
                     this.authgroupForm.fatherJob = student.fatherJob,
+                    this.authgroupForm.fatherIdNo = student.fatherIdNo,
                     this.authgroupForm.motherName = student.motherName,
                     this.authgroupForm.motherPhone = student.motherPhone,
                     this.authgroupForm.motherJob = student.motherJob,
+                    this.authgroupForm.motherIdNo = student.motherIdNo,
+                    this.authgroupForm.homeAddress = student.homeAddress,
+                    this.dialogFormVisible = !this.dialogFormVisible;
+                this.formEditType = 'detail';
+                this.searchForm[0].disabled = true;
+                this.searchForm[1].disabled = true;
+                this.searchForm[2].disabled = true;
+                this.searchForm[3].disabled = true;
+                this.searchForm[4].disabled = true;
+                this.searchForm[5].disabled = true;
+                this.searchForm[6].disabled = true;
+                this.searchForm[7].disabled = true;
+                this.searchForm[8].disabled = true;
+                this.searchForm[9].disabled = true;
+                this.searchForm[10].disabled = true;
+                this.searchForm[11].disabled = true;
+                this.searchForm[12].disabled = true;
+                this.searchForm[13].disabled = true;
+            },
+
+
+            handleEdit(student) {
+                this.searchForm[0].disabled = false;
+                this.searchForm[1].disabled = false;
+                this.searchForm[2].disabled = false;
+                this.searchForm[3].disabled = false;
+                this.searchForm[4].disabled = false;
+                this.searchForm[5].disabled = false;
+                this.searchForm[6].disabled = false;
+                this.searchForm[7].disabled = false;
+                this.searchForm[8].disabled = false;
+                this.searchForm[9].disabled = false;
+                this.searchForm[10].disabled = false;
+                this.searchForm[11].disabled = false;
+                this.searchForm[12].disabled = false;
+                this.searchForm[13].disabled = false;
+
+                this.authgroupForm.id = student.id,
+                    this.authgroupForm.code = student.code,
+                    this.authgroupForm.name = student.name,
+                    this.authgroupForm.classCode = student.className,
+                    this.authgroupForm.sex = student.sex = 1 ? "男" : "女",
+                    this.authgroupForm.age = student.age,
+                    this.authgroupForm.fatherName = student.fatherName,
+                    this.authgroupForm.fatherPhone = student.fatherPhone,
+                    this.authgroupForm.fatherIdNo = student.fatherIdNo,
+                    this.authgroupForm.fatherJob = student.fatherJob,
+                    this.authgroupForm.motherName = student.motherName,
+                    this.authgroupForm.motherPhone = student.motherPhone,
+                    this.authgroupForm.motherJob = student.motherJob,
+                    this.authgroupForm.motherIdNo = student.motherIdNo,
                     this.authgroupForm.homeAddress = student.homeAddress,
                     this.dialogFormVisible = !this.dialogFormVisible;
                 this.formEditType = 'edit';
                 this.searchForm[0].disabled = true;
                 this.searchForm[1].disabled = true;
-                this.searchForm[2].disabled = true;
-                this.searchForm[3].disabled = true;
-
             },
+
             LogOut() {
                 this.$message.success("登出成功")
                 this.Cook.set("userName", null);
                 this.$router.push({path: '/', query: {}});
             },
+
             handleStudent() {
                 this.$router.push({path: '/', query: {}});
             },
+
             handleDelete(studentId) {
                 this.$http.get("http://localhost:8521/student/deleteById?id=" + studentId,
                     {

@@ -4,7 +4,7 @@
        
     <el-dialog
     
-      :title="title === 'edit' ? '编辑' :(title === 'add' ? '添加' : '设置')"
+      :title="title === 'edit' ? '编辑' :(title === 'add' ? '添加' : '详情')"
         :visible.sync="dialogFormVisible"
       :before-close="handleFormModalCancel"
       :width="formEditType === 'set' ? '400px' : '760px'"
@@ -78,7 +78,7 @@
           </el-form-item>
         </template>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" :style="{display: title === 'detail' ? 'none' : ''}">
         <el-button type="danger" @click="handleFormModalCancel('searchData')">取 消</el-button>
         <el-button class="btn" type="warning"  @click="handleFormModalOk('searchData')">确 定</el-button>
       </div>

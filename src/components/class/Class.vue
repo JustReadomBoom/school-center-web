@@ -151,8 +151,6 @@
                         width: "120px",
                         isFormItemShow: true
                     },
-
-
                 ],
 
                 rules: {
@@ -179,15 +177,9 @@
         mounted() {
             this.handleCurrentChange(this.currentPage);
             this.pagesize = this.total % this.currentPage
-
-            // if (this.$route.query.username === "root") {
-            //
-            //     this.seen = true;
-            // }
         },
         methods: {
             validateTrue(searchData) {
-
                 console.log("searchData", searchData)
                 if (this.formEditType === "edit") {
                     this.editClassList(searchData);
@@ -196,9 +188,11 @@
                 }
                 this.dialogFormVisible = false;
             },
+
             validateFalse() {
                 this.dialogFormVisible = true;
             },
+
             closeDialog(newDialogFormVisible) {
 
                 this.dialogFormVisible = newDialogFormVisible;
@@ -330,19 +324,21 @@
                 this.Cook.set("userName", null);
                 this.$router.push({path: '/', query: {}});
             },
+
             handleAdd() {
                 this.dialogFormVisible = !this.dialogFormVisible;
                 this.formEditType = 'add';
                 this.searchForm[0].disabled = false;
 
             },
+
             handleDelete(id) {
                 this.$http.get("http://localhost:8521/class/deleteById?id=" + id,
                     {
                         withCredentials: true
                     }).then(resp => {
                     let code = resp.data.code;
-                    this.$message(resp.data.msg)
+                    this.$message(resp.data.msg);
                     if (code === '0000') {
                         this.handleCurrentChange(this.currentPage);
                     }
