@@ -32,6 +32,8 @@
                 </el-input>
                 <el-button class="btn" size="small" type="primary" icon="el-icon-search" @click="searchClick()">搜索
                 </el-button>
+                <el-button size="small" type="warning" icon="el-icon-download" @click="downloadData()">下载
+                </el-button>
             </div>
 
 
@@ -93,15 +95,15 @@
                 </el-table-column>
 
                 <!--<el-table-column label="爸爸手机号" :span="8">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{ scope.row.fatherPhone }}</span>-->
-                    <!--</template>-->
+                <!--<template slot-scope="scope">-->
+                <!--<span>{{ scope.row.fatherPhone }}</span>-->
+                <!--</template>-->
                 <!--</el-table-column>-->
 
                 <!--<el-table-column label="爸爸工作" :span="8">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{ scope.row.fatherJob }}</span>-->
-                    <!--</template>-->
+                <!--<template slot-scope="scope">-->
+                <!--<span>{{ scope.row.fatherJob }}</span>-->
+                <!--</template>-->
                 <!--</el-table-column>-->
 
                 <el-table-column label="妈妈姓名" :span="8">
@@ -111,21 +113,21 @@
                 </el-table-column>
 
                 <!--<el-table-column label="妈妈手机号" :span="8">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{ scope.row.motherPhone }}</span>-->
-                    <!--</template>-->
+                <!--<template slot-scope="scope">-->
+                <!--<span>{{ scope.row.motherPhone }}</span>-->
+                <!--</template>-->
                 <!--</el-table-column>-->
 
                 <!--<el-table-column label="妈妈工作" :span="8">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{ scope.row.motherJob }}</span>-->
-                    <!--</template>-->
+                <!--<template slot-scope="scope">-->
+                <!--<span>{{ scope.row.motherJob }}</span>-->
+                <!--</template>-->
                 <!--</el-table-column>-->
 
                 <!--<el-table-column label="家庭地址" :span="8">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{ scope.row.homeAddress }}</span>-->
-                    <!--</template>-->
+                <!--<template slot-scope="scope">-->
+                <!--<span>{{ scope.row.homeAddress }}</span>-->
+                <!--</template>-->
                 <!--</el-table-column>-->
 
                 <el-table-column prop="mit" label="操作" width="220">
@@ -557,6 +559,11 @@
                     console.log(error);
                     this.$message(error)
                 });
+            },
+
+
+            downloadData() {
+                window.open("http://localhost:8521/student/downloadData");
             },
 
             handleCurrentChange: function (currentPage) {
