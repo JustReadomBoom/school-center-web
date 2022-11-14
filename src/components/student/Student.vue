@@ -54,83 +54,92 @@
             <el-button class="btn" size="mini" type="primary" @click="handleAdd()">添加</el-button>
         </el-row>
         <el-row class="row alert alert-info" style="height: 80%;">
-
-
             <el-table class="table table-striped" :data="students" style="width: 100%">
-
-                <el-table-column :span="8" label="学号">
+                <el-table-column label="学号" width="70">
                     <template slot-scope="scope">
                         <span>{{ scope.row.code }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="姓名" :span="8">
+                <el-table-column label="姓名" width="100">
                     <template slot-scope="scope">
                         <span>{{ scope.row.name }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="性别" :span="8">
+                <el-table-column label="性别" width="70">
                     <template slot-scope="scope">
                         <span>{{ scope.row.sex == 1 ? "男" : "女" }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="年龄" :span="8">
+                <el-table-column label="年龄" width="70">
                     <template slot-scope="scope">
                         <span>{{ scope.row.age }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="班级" :span="8">
+                <el-table-column label="班级" width="100">
                     <template slot-scope="scope">
                         <span>{{ scope.row.className }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="爸爸姓名" :span="8">
+                <el-table-column label="爸爸姓名" width="100">
                     <template slot-scope="scope">
                         <span>{{ scope.row.fatherName }}</span>
                     </template>
                 </el-table-column>
 
-                <!--<el-table-column label="爸爸手机号" :span="8">-->
-                <!--<template slot-scope="scope">-->
-                <!--<span>{{ scope.row.fatherPhone }}</span>-->
-                <!--</template>-->
-                <!--</el-table-column>-->
+                <el-table-column label="爸爸手机号" width="120">
+                <template slot-scope="scope">
+                <span>{{ scope.row.fatherPhone }}</span>
+                </template>
+                </el-table-column>
 
-                <!--<el-table-column label="爸爸工作" :span="8">-->
-                <!--<template slot-scope="scope">-->
-                <!--<span>{{ scope.row.fatherJob }}</span>-->
-                <!--</template>-->
-                <!--</el-table-column>-->
+                <el-table-column label="爸爸身份证号" width="140">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.fatherIdNo }}</span>
+                    </template>
+                </el-table-column>
 
-                <el-table-column label="妈妈姓名" :span="8">
+                <el-table-column label="爸爸工作单位" width="230">
+                <template slot-scope="scope">
+                <span>{{ scope.row.fatherJob }}</span>
+                </template>
+                </el-table-column>
+
+                <el-table-column label="妈妈姓名" width="100">
                     <template slot-scope="scope">
                         <span>{{ scope.row.motherName }}</span>
                     </template>
                 </el-table-column>
 
-                <!--<el-table-column label="妈妈手机号" :span="8">-->
-                <!--<template slot-scope="scope">-->
-                <!--<span>{{ scope.row.motherPhone }}</span>-->
-                <!--</template>-->
-                <!--</el-table-column>-->
+                <el-table-column label="妈妈手机号" width="120">
+                <template slot-scope="scope">
+                <span>{{ scope.row.motherPhone }}</span>
+                </template>
+                </el-table-column>
 
-                <!--<el-table-column label="妈妈工作" :span="8">-->
-                <!--<template slot-scope="scope">-->
-                <!--<span>{{ scope.row.motherJob }}</span>-->
-                <!--</template>-->
-                <!--</el-table-column>-->
+                <el-table-column label="妈妈身份证号" width="140">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.motherIdNo }}</span>
+                    </template>
+                </el-table-column>
 
-                <!--<el-table-column label="家庭地址" :span="8">-->
-                <!--<template slot-scope="scope">-->
-                <!--<span>{{ scope.row.homeAddress }}</span>-->
-                <!--</template>-->
-                <!--</el-table-column>-->
+                <el-table-column label="妈妈工作单位" width="230">
+                <template slot-scope="scope">
+                <span>{{ scope.row.motherJob }}</span>
+                </template>
+                </el-table-column>
 
-                <el-table-column prop="mit" label="操作" width="220">
+                <el-table-column label="家庭地址" width="330">
+                <template slot-scope="scope">
+                <span>{{ scope.row.homeAddress }}</span>
+                </template>
+                </el-table-column>
+
+                <el-table-column fixed="right" label="操作" width="220">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
                         <el-button type="success" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
