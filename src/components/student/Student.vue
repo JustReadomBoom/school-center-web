@@ -27,9 +27,6 @@
                 <span style="color: black">学号：</span>
                 <el-input class="in" v-model="code">
                 </el-input>
-                <span style="color: black">班级：</span>
-                <el-input class="in" v-model="classCode">
-                </el-input>
                 <el-button class="btn" size="small" type="primary" icon="el-icon-search" @click="searchClick()">搜索
                 </el-button>
                 <el-button size="small" type="warning" icon="el-icon-download" @click="downloadData()">下载
@@ -64,6 +61,20 @@
                 <el-table-column label="姓名" width="100">
                     <template slot-scope="scope">
                         <span>{{ scope.row.name }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="头像" width="100">
+                    <template slot-scope="scope">
+                        <el-upload :action = uploadImgUrl
+                                   :show-file-list="false"
+                                   :before-upload="beforeUpload"
+                                   :on-success="uploadSuccess2 = (res, file) => {uploadSuccess(res, file, scope.row)}"
+                                   :data="{id: scope.row.id}"
+                                    accept="image/*">
+                            <span v-show="!scope.row.photo">上传头像</span>
+                            <img v-show="scope.row.photo" :src="scope.row.photo" style="width: 70px;height: 70px">
+                        </el-upload>
                     </template>
                 </el-table-column>
 
@@ -205,6 +216,7 @@
 
                 dialogFormVisible: false,
                 formEditType: 'add',
+                uploadImgUrl: "http://localhost:8521/student/uploadImg",
 
                 classList: [],
                 currentPage: 1,
@@ -434,6 +446,15 @@
         },
 
         methods: {
+            beforeUpload(file) {
+
+            },
+
+            uploadSuccess(res, file, row){
+                row.photo = res.data && res.data.photo;
+                this.handleCurrentChange(this.currentPage);
+            },
+
             getClassesList() {
                 this.$http.get("http://localhost:8521/class/queryClassList",
                     {
@@ -550,8 +571,7 @@
                         currentPage: this.currentPage,
                         pageSize: 10,
                         name: this.name,
-                        code: this.code,
-                        classCode: this.classCode
+                        code: this.code
                     },
                     {
                         withCredentials: true
@@ -705,6 +725,8 @@
                     this.$message(error)
                 });
             }
+
+
         }
     }
 </script>
