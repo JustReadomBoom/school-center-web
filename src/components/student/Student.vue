@@ -24,9 +24,9 @@
                 <span style="color: black">姓名：</span>
                 <el-input class="in" v-model="name">
                 </el-input>
-                <span style="color: black">学号：</span>
-                <el-input class="in" v-model="code">
-                </el-input>
+                <!--<span style="color: black">学号：</span>-->
+                <!--<el-input class="in" v-model="code">-->
+                <!--</el-input>-->
                 <el-button class="btn" size="small" type="primary" icon="el-icon-search" @click="searchClick()">搜索
                 </el-button>
                 <el-button size="small" type="warning" icon="el-icon-download" @click="downloadData()">下载
@@ -64,7 +64,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="头像" width="100">
+                <el-table-column label="头像" width="120">
                     <template slot-scope="scope">
                         <el-upload :action = uploadImgUrl
                                    :show-file-list="false"
@@ -72,7 +72,7 @@
                                    :on-success="uploadSuccess2 = (res, file) => {uploadSuccess(res, file, scope.row)}"
                                    :data="{id: scope.row.id}"
                                     accept="image/*">
-                            <span v-show="!scope.row.photo">上传头像</span>
+                            <el-button type="primary" icon="el-icon-upload2" v-show="!scope.row.photo" plain></el-button>
                             <img v-show="scope.row.photo" :src="scope.row.photo" style="width: 70px;height: 70px">
                         </el-upload>
                     </template>
@@ -570,18 +570,17 @@
                     {
                         currentPage: this.currentPage,
                         pageSize: 10,
-                        name: this.name,
-                        code: this.code
+                        name: this.name
                     },
                     {
                         withCredentials: true
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.students = resp.data.data.students
-                        this.total = resp.data.data.total
+                        this.students = resp.data.data.students;
+                        this.total = resp.data.data.total;
                     } else {
-                        this.$message(resp.data.msg)
+                        this.$message(resp.data.msg);
                         this.students = [];
                     }
                 }).catch(error => {
@@ -606,10 +605,10 @@
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.students = resp.data.data.students
-                        this.total = resp.data.data.total
+                        this.students = resp.data.data.students;
+                        this.total = resp.data.data.total;
                     } else {
-                        this.$message(resp.data.msg)
+                        this.$message(resp.data.msg);
                     }
                 }).catch(error => {
                     console.log(error);
@@ -701,7 +700,7 @@
             },
 
             LogOut() {
-                this.$message.success("登出成功")
+                this.$message.success("登出成功");
                 this.Cook.set("userName", null);
                 this.$router.push({path: '/', query: {}});
             },
@@ -716,7 +715,7 @@
                         withCredentials: true
                     }).then(resp => {
                     let code = resp.data.code;
-                    this.$message(resp.data.msg)
+                    this.$message(resp.data.msg);
                     if (code === '0000') {
                         this.handleCurrentChange(this.currentPage);
                     }
