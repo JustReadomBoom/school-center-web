@@ -154,7 +154,8 @@
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
                         <el-button type="success" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">刪除</el-button>
+                        <!--<el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">刪除</el-button>-->
+                        <el-button size="mini" type="danger" @click="beforeDelete(scope.row.id)">刪除</el-button>
                     </template>
                 </el-table-column>
 
@@ -172,6 +173,15 @@
                     :total="total">
             </el-pagination>
         </el-row>
+
+
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="270px">
+            <span style="color: red; font-size: medium;">确定删除该学生吗？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleDelete(deleteId)">确 定</el-button>
+            </span>
+        </el-dialog>
 
     </div>
 </template>
@@ -207,6 +217,9 @@
                 motherJob: "",
                 motherIdNo: "",
                 homeAddress: "",
+
+                dialogVisible: false,
+                deleteId: "",
 
                 names: "请输入学号进行搜索...",
                 seen: false,
@@ -439,7 +452,6 @@
         },
 
         mounted() {
-
             this.handleCurrentChange(this.currentPage);
             this.pagesize = this.total % this.currentPage
 
@@ -709,7 +721,14 @@
                 this.$router.push({path: '/', query: {}});
             },
 
+
+            beforeDelete(studentId){
+                this.dialogVisible = true;
+                this.deleteId = studentId;
+            },
+
             handleDelete(studentId) {
+                this.dialogVisible = false;
                 this.$http.get("http://localhost:8521/student/deleteById?id=" + studentId,
                     {
                         withCredentials: true
@@ -718,6 +737,7 @@
                     this.$message(resp.data.msg);
                     if (code === '0000') {
                         this.handleCurrentChange(this.currentPage);
+                        this.deleteId = "";
                     }
                 }).catch(error => {
                     console.log(error);
