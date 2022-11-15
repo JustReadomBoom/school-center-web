@@ -477,11 +477,11 @@
                         this.classList = resp.data.data.classList;
                         this.searchForm[4].props = this.classList;
                     } else {
-                        this.$message(resp.data.msg)
+                        this.$message.warning(resp.data.msg)
                     }
                 }).catch(error => {
                     console.log(error);
-                    this.$message(error)
+                    this.$message.error(error)
                 });
             },
 
@@ -527,14 +527,14 @@
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.$message(resp.data.msg);
+                        this.$message.success(resp.data.msg);
                         this.handleCurrentChange(this.currentPage);
                     } else {
-                        this.$message(resp.data.msg)
+                        this.$message.warning(resp.data.msg)
                     }
                 }).catch(error => {
                     console.log(error);
-                    this.$message(error)
+                    this.$message.error(error)
                 });
             },
 
@@ -561,14 +561,14 @@
                     }).then(resp => {
                     let code = resp.data.code;
                     if (code === '0000') {
-                        this.$message(resp.data.msg);
+                        this.$message.success(resp.data.msg);
                         this.handleCurrentChange(this.currentPage);
                     } else {
-                        this.$message(resp.data.msg)
+                        this.$message.warning(resp.data.msg)
                     }
                 }).catch(error => {
                     console.log(error);
-                    this.$message(error)
+                    this.$message.error(error)
                 });
             },
 
@@ -592,12 +592,12 @@
                         this.students = resp.data.data.students;
                         this.total = resp.data.data.total;
                     } else {
-                        this.$message(resp.data.msg);
+                        this.$message.warning(resp.data.msg);
                         this.students = [];
                     }
                 }).catch(error => {
                     console.log(error);
-                    this.$message(error)
+                    this.$message.error(error)
                 });
             },
 
@@ -620,7 +620,7 @@
                         this.students = resp.data.data.students;
                         this.total = resp.data.data.total;
                     } else {
-                        this.$message(resp.data.msg);
+                        this.$message.error(resp.data.msg);
                     }
                 }).catch(error => {
                     console.log(error);
@@ -734,14 +734,14 @@
                         withCredentials: true
                     }).then(resp => {
                     let code = resp.data.code;
-                    this.$message(resp.data.msg);
+                    this.$message.success(resp.data.msg);
                     if (code === '0000') {
                         this.handleCurrentChange(this.currentPage);
                         this.deleteId = "";
                     }
                 }).catch(error => {
                     console.log(error);
-                    this.$message(error)
+                    this.$message.error(error)
                 });
             }
 

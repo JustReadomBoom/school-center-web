@@ -6,12 +6,12 @@
       <router-view></router-view>
     </div>
 
-    <div class="footerbox">
+    <!--<div class="footerbox">-->
 
-      www.zqz.com
+      <!--www.zqz.com-->
 
 
-    </div>
+    <!--</div>-->
   </div>
 
 </template>
@@ -35,7 +35,7 @@
     width: 100%;
     height: 100%;
     min-height: 800px;
-    background-image:url('./assets/bg.jpg');
+    background-image:url('assets/bg.jpg');
     background-size: 100%;
     color: azure;
   }
