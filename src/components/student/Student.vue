@@ -17,6 +17,7 @@
                 <el-tag class="alert" style="color: rgb(64, 94, 114);" size="medium">
                     登录用戶：{{this.Cook.get("userName")}}
                 </el-tag>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <el-button class="badge" size="mini" type="info" @click="LogOut()">退出</el-button>
             </el-row>
 
@@ -27,8 +28,17 @@
                 <!--<span style="color: black">学号：</span>-->
                 <!--<el-input class="in" v-model="code">-->
                 <!--</el-input>-->
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <el-button class="btn" size="small" type="primary" icon="el-icon-search" @click="searchClick()">搜索
                 </el-button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-upload :action=uploadDataUrl
+                           :show-file-list="false"
+                           :before-upload="beforeUpload"
+                           :on-success="uploadSuccess3 = (res, file) => {uploadExcelSuccess(res, file)}">
+                    <el-button size="small" type="primary" icon="el-icon-upload">上传</el-button>
+                </el-upload>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <el-button size="small" type="warning" icon="el-icon-download" @click="downloadData()">下载
                 </el-button>
             </div>
@@ -66,13 +76,14 @@
 
                 <el-table-column label="头像" width="120">
                     <template slot-scope="scope">
-                        <el-upload :action = uploadImgUrl
+                        <el-upload :action=uploadImgUrl
                                    :show-file-list="false"
                                    :before-upload="beforeUpload"
                                    :on-success="uploadSuccess2 = (res, file) => {uploadSuccess(res, file, scope.row)}"
                                    :data="{id: scope.row.id}"
-                                    accept="image/*">
-                            <el-button type="primary" icon="el-icon-upload2" v-show="!scope.row.photo" plain></el-button>
+                                   accept="image/*">
+                            <el-button type="primary" icon="el-icon-upload2" v-show="!scope.row.photo"
+                                       plain></el-button>
                             <img v-show="scope.row.photo" :src="scope.row.photo" style="width: 70px;height: 70px">
                         </el-upload>
                     </template>
@@ -103,9 +114,9 @@
                 </el-table-column>
 
                 <el-table-column label="爸爸手机号" width="120">
-                <template slot-scope="scope">
-                <span>{{ scope.row.fatherPhone }}</span>
-                </template>
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.fatherPhone }}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column label="爸爸身份证号" width="140">
@@ -115,9 +126,9 @@
                 </el-table-column>
 
                 <el-table-column label="爸爸工作单位" width="230">
-                <template slot-scope="scope">
-                <span>{{ scope.row.fatherJob }}</span>
-                </template>
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.fatherJob }}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column label="妈妈姓名" width="100">
@@ -127,9 +138,9 @@
                 </el-table-column>
 
                 <el-table-column label="妈妈手机号" width="120">
-                <template slot-scope="scope">
-                <span>{{ scope.row.motherPhone }}</span>
-                </template>
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.motherPhone }}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column label="妈妈身份证号" width="140">
@@ -139,15 +150,15 @@
                 </el-table-column>
 
                 <el-table-column label="妈妈工作单位" width="230">
-                <template slot-scope="scope">
-                <span>{{ scope.row.motherJob }}</span>
-                </template>
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.motherJob }}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column label="家庭地址" width="330">
-                <template slot-scope="scope">
-                <span>{{ scope.row.homeAddress }}</span>
-                </template>
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.homeAddress }}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column fixed="right" label="操作" width="220">
@@ -230,6 +241,7 @@
                 dialogFormVisible: false,
                 formEditType: 'add',
                 uploadImgUrl: "http://localhost:8521/student/uploadImg",
+                uploadDataUrl: "http://localhost:8521/student/importData",
 
                 classList: [],
                 currentPage: 1,
@@ -462,10 +474,22 @@
 
             },
 
-            uploadSuccess(res, file, row){
+            uploadSuccess(res, file, row) {
                 row.photo = res.data && res.data.photo;
                 this.handleCurrentChange(this.currentPage);
             },
+
+            uploadExcelSuccess(res, file) {
+                let code = res.code;
+                let msg = res.msg;
+                if (code === '0000') {
+                    this.$message.success(msg);
+                    this.handleCurrentChange(this.currentPage);
+                } else {
+                    this.$message.error(msg);
+                }
+            },
+
 
             getClassesList() {
                 this.$http.get("http://localhost:8521/class/queryClassList",
@@ -722,7 +746,7 @@
             },
 
 
-            beforeDelete(studentId){
+            beforeDelete(studentId) {
                 this.dialogVisible = true;
                 this.deleteId = studentId;
             },
