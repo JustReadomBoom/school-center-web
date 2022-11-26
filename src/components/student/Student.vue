@@ -89,6 +89,12 @@
                     </template>
                 </el-table-column>
 
+                <el-table-column label="身份证号" width="140">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.idNo }}</span>
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="性别" width="70">
                     <template slot-scope="scope">
                         <span>{{ scope.row.sex == 1 ? "男" : "女" }}</span>
@@ -214,6 +220,7 @@
                 id: "",
                 code: "",
                 name: "",
+                idNo: "",
                 classCode: "",
                 className: "",
                 age: 0,
@@ -251,6 +258,7 @@
                     id: "",
                     code: "",
                     name: "",
+                    idNo: "",
                     classCode: "",
                     className: "",
                     age: "",
@@ -281,6 +289,13 @@
                         type: "Input",
                         label: "姓名",
                         prop: "name",
+                        width: "120px",
+                        isFormItemShow: true
+                    },
+                    {
+                        type: "Input",
+                        label: "身份证号",
+                        prop: "idNo",
                         width: "120px",
                         isFormItemShow: true
                     },
@@ -396,6 +411,14 @@
                         {required: true, message: "请填写学生姓名", trigger: "blur"},
                         {max: 5, min: 1, message: "请填正确的姓名", trigger: "blur"}
                     ],
+                    idNo: [
+                        {required: true, message: "请填写身份证号", trigger: "blur"},
+                        {
+                            pattern: "^[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$",
+                            message: "请输入正确的身份证号",
+                            trigger: "blur"
+                        }
+                    ],
                     sex: [
                         {required: true, message: "请选择学生性别", trigger: "blur"}
                     ],
@@ -499,7 +522,7 @@
                     let code = resp.data.code;
                     if (code === '0000') {
                         this.classList = resp.data.data.classList;
-                        this.searchForm[4].props = this.classList;
+                        this.searchForm[5].props = this.classList;
                     } else {
                         this.$message.warning(resp.data.msg)
                     }
@@ -533,6 +556,7 @@
                         id: searchData.id,
                         code: searchData.code,
                         name: searchData.name,
+                        idNo: searchData.idNo,
                         classCode: searchData.classCode,
                         sex: searchData.sex,
                         age: searchData.age,
@@ -567,6 +591,7 @@
                     {
                         code: searchData.code,
                         name: searchData.name,
+                        idNo: searchData.idNo,
                         classCode: searchData.classCode,
                         sex: searchData.sex == '男' ? 1 : 2,
                         age: searchData.age,
@@ -667,6 +692,7 @@
                 this.authgroupForm.id = student.id,
                     this.authgroupForm.code = student.code,
                     this.authgroupForm.name = student.name,
+                    this.authgroupForm.idNo = student.idNo,
                     this.authgroupForm.classCode = student.className,
                     this.authgroupForm.sex = student.sex = 1 ? "男" : "女",
                     this.authgroupForm.age = student.age,
@@ -695,6 +721,7 @@
                 this.searchForm[11].disabled = true;
                 this.searchForm[12].disabled = true;
                 this.searchForm[13].disabled = true;
+                this.searchForm[14].disabled = true;
             },
 
 
@@ -713,10 +740,12 @@
                 this.searchForm[11].disabled = false;
                 this.searchForm[12].disabled = false;
                 this.searchForm[13].disabled = false;
+                this.searchForm[14].disabled = false;
 
                 this.authgroupForm.id = student.id,
                     this.authgroupForm.code = student.code,
                     this.authgroupForm.name = student.name,
+                    this.authgroupForm.idNo = student.idNo,
                     this.authgroupForm.classCode = student.className,
                     this.authgroupForm.sex = student.sex = 1 ? "男" : "女",
                     this.authgroupForm.age = student.age,
